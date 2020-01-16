@@ -1,7 +1,12 @@
 import React from "react";
+import CreateItem from "../components/CreateItem";
 
 const Sell = () => {
-  return <div>this is the sell page</div>;
+  return (
+    <>
+      <CreateItem />
+    </>
+  );
 };
 
 export default Sell;
