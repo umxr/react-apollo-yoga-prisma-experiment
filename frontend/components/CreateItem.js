@@ -40,15 +40,13 @@ const CreateItem = () => {
     const { data } = await createItem({
       variables: { ...inputs }
     });
-    if (data && data.createItem && data.createItem.id) {
-      resetForm();
-      Router.push({
-        pathname: "/item",
-        query: {
-          id: data.createItem.id
-        }
-      });
-    }
+    resetForm();
+    Router.push({
+      pathname: "/item",
+      query: {
+        id: data.createItem.id
+      }
+    });
   };
 
   return (
