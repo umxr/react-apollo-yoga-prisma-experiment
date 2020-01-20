@@ -28,10 +28,12 @@ const CREATE_ITEM = gql`
 `;
 
 const CreateItem = () => {
-  const { inputs, handleChange, resetForm } = useForm({
+  const { inputs, handleChange, resetForm, updateInputs } = useForm({
     title: "",
     price: 1,
-    description: ""
+    description: "",
+    image: "",
+    largeImage: ""
   });
   const [createItem, { loading, error }] = useMutation(CREATE_ITEM);
 
@@ -46,6 +48,28 @@ const CreateItem = () => {
       query: {
         id: data.createItem.id
       }
+    });
+  };
+
+  const handleUpload = async e => {
+    const files = e.target.files;
+    const data = new FormData();
+    data.append("file", files[0]);
+    data.append("upload_preset", "sickfits");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dktkzgrvj/image/upload",
+      {
+        method: "POST",
+        body: data
+      }
+    );
+
+    const file = await res.json();
+    updateInputs({
+      ...inputs,
+      image: file.secure_url,
+      largeImage: file.eager[0].secure_url
     });
   };
 
@@ -87,6 +111,17 @@ const CreateItem = () => {
             onChange={handleChange}
             required
           />
+        </label>
+        <label htmlFor="image">
+          Image
+          <input
+            type="file"
+            id="image"
+            name="image"
+            onChange={handleUpload}
+            required
+          />
+          {image && <img src={image} width={200} alt="upload preview" />}
         </label>
         <button type="submit">Submit</button>
       </fieldset>

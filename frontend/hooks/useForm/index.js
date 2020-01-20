@@ -18,6 +18,7 @@ const useForm = (initial = {}) => {
   return {
     inputs,
     handleChange,
+    updateInputs,
     resetForm
   };
 };
